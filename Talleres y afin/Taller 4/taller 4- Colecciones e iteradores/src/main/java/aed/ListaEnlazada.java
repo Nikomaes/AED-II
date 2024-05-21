@@ -51,7 +51,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
             _primero=nuevo;
             _ultimo=nuevo;
             _tamaño += 1;  
-        } else if (_tamaño>0) {;
+        } else if (_tamaño>0) {
             _ultimo.siguient=nuevo;
             nuevo.anter= _ultimo;
             _ultimo = nuevo;
@@ -142,7 +142,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         return modificable.toString();
     }
 
-    private class ListaIterador implements Iterador<T> { // en la idea teorica no existe un iterador actual sino que esta el siguiente y el anterior y entonces el iterador es un dedito que apunta al medio de entre ambos y yo lo represento con un nodo apuntando a el noso siguiente en si
+    /**private class ListaIterador implements Iterador<T> { // en la idea teorica no existe un iterador actual sino que esta el siguiente y el anterior y entonces el iterador es un dedito que apunta al medio de entre ambos y yo lo represento con un nodo apuntando a el noso siguiente en si
     	Nodo siguiente;
         ListaIterador() {
             siguiente=_primero;
@@ -196,5 +196,45 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 	    ListaIterador nuevo = new ListaIterador() ;
         return nuevo ; 
     }
+
+} esta idea de usar un solo puntero podria funcionar pero me parece que hay qu econsiderar demasidos casos particulares o condiciones que quizas se resuelve mejor considerando 2 punteros
+**/
+private class ListaIterador implements Iterador<T> { // en la idea teorica no existe un iterador actual sino que esta el siguiente y el anterior y entonces el iterador es un dedito que apunta al medio de entre ambos y yo lo represento con un nodo apuntando a el noso siguiente en si
+    Nodo siguiente;
+    Nodo anterior;
+    ListaIterador() {
+        siguiente=_primero;
+        anterior=null;
+    }
+
+    public boolean haySiguiente() {
+        return siguiente!=null;
+    }
+    
+    public boolean hayAnterior() {
+        return anterior!=null;
+    }
+    public T siguiente() {
+        //if (haySiguiente()) { es un requiere que ya haya siguiente para calcularlo
+        T res =siguiente.valor;
+        anterior=siguiente;
+        siguiente= siguiente.siguient;
+        return res;
+        
+    }
+    
+
+    public T anterior() {
+        T res = anterior.valor;
+        siguiente=anterior;
+        anterior= anterior.anter;
+        return res;
+    }
+}
+
+public Iterador<T> iterador() {
+    ListaIterador nuevo = new ListaIterador() ;
+    return nuevo ; 
+}
 
 }
