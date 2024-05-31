@@ -194,7 +194,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
     @Override
     public String toString(){
-        Nodo actual=_raiz;
+        Nodo actual=this._raiz;
         while (actual.izq!=null){
         //while (actual.izq.valor!=this.minimo()){ //actual".izq".valor la parte entre comillas es para que salga del ciclo en el elemento anterior al minimo y así n ome quedo con la posicion del minimo sino con la del anterior ya que no necesito la posiciòn del minimo para saber su valor ya que tengo un metodo que lo calcula y se que dado que esta ordenado el arbol el elemento que este antes del minimo es el inmediatamente anterior a este asi que si paro un poco antes despues en el while siguiente me sirve
             actual=actual.izq;                // el minimo es el valor menor de todos asi que no tiene sentido separar en los casos en los que actual sea mayor que el minimo y actual sea menor que el minimo y que salga cuando sea igual ya que el caso de menor que el minimo no deberia existir si hice las cosas bien
@@ -246,9 +246,9 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         public boolean haySiguiente() {  
-            return _porSalir<=this.maximo();
+            throw new UnsupportedOperationException("No implementada aun");
+ 
         }
-    
         public T siguiente() {
             throw new UnsupportedOperationException("No implementada aun");
         }
