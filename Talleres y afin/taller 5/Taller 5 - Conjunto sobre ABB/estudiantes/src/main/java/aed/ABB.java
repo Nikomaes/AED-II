@@ -195,10 +195,10 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     @Override
     public String toString(){
         Nodo actual=_raiz;
-        while (actual.izq.valor!=this.minimo()){ //actual".izq".valor la parte entre comillas es para que salga del ciclo en el elemento anterior al minimo y así n ome quedo con la posicion del minimo sino con la del anterior ya que no necesito la posiciòn del minimo para saber su valor ya que tengo un metodo que lo calcula y se que dado que esta ordenado el arbol el elemento que este antes del minimo es el inmediatamente anterior a este asi que si paro un poco antes despues en el while siguiente me sirve
+        while (actual.izq!=null){
+        //while (actual.izq.valor!=this.minimo()){ //actual".izq".valor la parte entre comillas es para que salga del ciclo en el elemento anterior al minimo y así n ome quedo con la posicion del minimo sino con la del anterior ya que no necesito la posiciòn del minimo para saber su valor ya que tengo un metodo que lo calcula y se que dado que esta ordenado el arbol el elemento que este antes del minimo es el inmediatamente anterior a este asi que si paro un poco antes despues en el while siguiente me sirve
             actual=actual.izq;                // el minimo es el valor menor de todos asi que no tiene sentido separar en los casos en los que actual sea mayor que el minimo y actual sea menor que el minimo y que salga cuando sea igual ya que el caso de menor que el minimo no deberia existir si hice las cosas bien
         }
-        
         StringBuffer modif=new StringBuffer();
         modif.append("{");
         modif.append(this.minimo());
@@ -206,7 +206,16 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         while (actual.valor!=this.maximo()) {
             modif.append(actual.valor); 
             modif.append(", ");
-            sucesor(actual);                       
+            if (actual.der==null) {
+                Nodo ultimo=actual.prev;
+                while (actual.valor.compareTo(ultimo.valor)>0) { //aqui no me preocupo por el caso de que llegue a la raiz y quiera seguir subiendo siendo que la raiz no tiene nodo previo ya que ese caso no puede pasar ya que si llego hasta la raiz ese es el que sigue ya que es mayor que todos los de la izquierda y no hay repetidos por tanto si subio hasta la raiz y todo estaba bien significa que todos los que habia abajo eran menores que el que quiero comparar y entonces el sucesor inmediato es la raiz ya que los de la derecha de la raiz son mayores a esta
+                    ultimo=ultimo.prev;      
+                }      
+                actual=ultimo;
+            }       
+            else if (actual.der!=null) {
+                sucesorInmediato(actual);  
+            }                          
         }
         modif.append(this.maximo());
         modif.append("}");
@@ -227,15 +236,17 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     }
     private class ABB_Iterador implements Iterador<T> {
-        private Nodo _actual;
+        private Nodo _porSalir; //hace referencia a que es el elemento que esta "por salir" a continuacion en el recorrido
         
         private ABB_Iterador(){
-
+            _porSalir=_raiz;
+            while (_porSalir.izq!=null) { 
+                _porSalir=_porSalir.izq;
+            }
         }
 
-
-        public boolean haySiguiente() {            
-            throw new UnsupportedOperationException("No implementada aun");
+        public boolean haySiguiente() {  
+            return _porSalir<=this.maximo();
         }
     
         public T siguiente() {
