@@ -230,7 +230,7 @@ class ABBTests {
         }
         assertEquals(NCLAVES, conjunto.cardinal());
     
-        // Insertar de nuevo
+        // Insertar de nueucevo
         for (Integer i = 0; i < NCLAVES; i++) {
             Integer k = clave(i);
             assertEquals(true, conjunto.pertenece(k));
@@ -271,5 +271,12 @@ class ABBTests {
 
     }
 
+//este test lo agregue para ver si el caso de la raiz solita lo pasa
+@Test
+    void testeliminar_1_solo() {
+        ABB<Integer> c = new ABB<Integer>();
+        c.insertar(5);
+        c.eliminar(5);
 
+    }
 }
